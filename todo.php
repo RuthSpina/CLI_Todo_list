@@ -1,44 +1,87 @@
 <?php
 
-//array that holds list of things
+//Create array to hold list of todo items
+
 $items = array();
-$key = 1;
-//this is the loop
-do{
-	//iterate through list items
-	foreach($items as $key => $item) {
-		$key++;
-		//display each item and a new line
-		echo "[{$key}] {$item}\n";
-	}
+//List array items formatted for CLI
+ 
 
-	//show the menu options
-	echo '(N)ew item, (R)emove item, (Q)uit : ';
+ // Get STDIN, strip whitespace and newlines, 
+ // and convert to uppercase if $upper is true
+ function get_input($upper = FALSE) 
+{
 
-	//get the input from user
-	$input = trim(fgets(STDIN));
+    if ($upper == TRUE) {
+          $input = strtoupper(trim(fgets(STDIN)));
+    }  
 
-	//check from actionable input
-	if ($input == 'N' || $input =='n') {
-		//ask for entry
-		echo 'Enter item: ';
-		//add entry to list array
-		$items [] = trim(fgets(STDIN));
-	}elseif ($input == 'R'|| $input =='r') {
-		//remove which item?
-		echo 'Enter item number to remove: ';
-	//get array key
-	$key = trim(fgets(STDIN));
-        // Remove from array
-		--$key;
-        unset($items[$key]);
+else{
+    $input = trim(fgets(STDIN));
+}
+        
+    return $input;
+}
+
+
+function list_items($list)
+{
+    $list_string = '';
+   $num = 1;
+
+        foreach ($list as $num => $value) {
+        $num++;
+        // offset $num to add one and start list at 1
+        //$num = $num + 1;
+        $list_string .= "[$num]  TODO item {$num} - $value" . PHP_EOL;
+
     }
-// Exit when input is (Q)uit
-} while (($input != 'Q') && ($input != 'q'));
+    
+    //$list_string = [$num]  "TODO item {$num} - " 
 
-// Say Goodbye!
-	echo "Goodbye!\n";
+        return $list_string;
 
-// Exit with 0 errors
-exit(0);	
+}
+
+
+ // The loop!
+ do {
+     // Echo the list produced by the function
+     echo list_items($items);
+
+      // Show the menu options
+     echo '(N)ew item, (R)emove item, (Q)uit : ';
+
+         // Get the input from user
+     // Use trim() to remove whitespace and newlines
+     $input = get_input(TRUE);
+
+
+
+     // Check for actionable input
+if ($input == 'N') {
+         // Ask for entry
+         echo 'Enter item: ';
+         // Add entry to list array
+         $items[] = get_input();
+
+} elseif ($input == 'R') {
+         // Remove which item?
+         echo 'Enter item number to remove: ';
+         // Get array key
+         $key = get_input();
+         // Remove from array
+         unset($items[$key - 1]);
+     }
+ // Exit when input is (Q)uit
+ } while ($input != 'Q');
+ 
+
+ // Say Goodbye!
+ echo "Goodbye!\n";
+
+ // Exit with 0 errors
+ exit(0);
+
+
+ ?>	
 	
