@@ -11,13 +11,14 @@ $items = array();
  function get_input($upper = FALSE) 
 {
 
-    if ($upper == TRUE) {
+    if ($upper) {
+    	//if $upper == TRUE is a given with an if statement.
           $input = strtoupper(trim(fgets(STDIN)));
     }  
 
-else{
+	else{
     $input = trim(fgets(STDIN));
-}
+	}
         
     return $input;
 }
@@ -26,9 +27,9 @@ else{
 function list_items($list)
 {
     $list_string = '';
-   $num = 1;
+    //$num = 1;
 
-        foreach ($list as $num => $value) {
+    foreach ($list as $num => $value) {
         $num++;
         // offset $num to add one and start list at 1
         //$num = $num + 1;
@@ -39,7 +40,6 @@ function list_items($list)
     //$list_string = [$num]  "TODO item {$num} - " 
 
         return $list_string;
-
 }
 
 
@@ -58,28 +58,31 @@ function list_items($list)
 
 
      // Check for actionable input
-if ($input == 'N') {
+if ($input == 'N') 
+{
          // Ask for entry
          echo 'Enter item: ';
          // Add entry to list array
-         $items[] = get_input();
-
-} elseif ($input == 'R') {
+        $items[] = get_input();
+	} 
+elseif ($input == 'R') {
          // Remove which item?
          echo 'Enter item number to remove: ';
          // Get array key
          $key = get_input();
          // Remove from array
          unset($items[$key - 1]);
-     }
- // Exit when input is (Q)uit
- } while ($input != 'Q');
+         
+         $items = array_values($items);
+	}
+ 	// Exit when input is (Q)uit
+} while ($input != 'Q');
  
 
- // Say Goodbye!
- echo "Goodbye!\n";
+ 	// Say Goodbye!
+ 	echo "Goodbye!\n";
 
- // Exit with 0 errors
+ 	// Exit with 0 errors
  exit(0);
 
 
