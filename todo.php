@@ -1,12 +1,12 @@
 <?php
 
-//Create array to hold list of todo items
+
 
 $items = array();
-//List array items formatted for CLI
+//open array to accomodate the items added/removed.
  
 
- // Get STDIN, strip whitespace and newlines, 
+ // Get STDIN (end user input) strip whitespace and newlines, 
  // and convert to uppercase if $upper is true
 function get_input($upper = FALSE) 
 {
@@ -62,6 +62,23 @@ function srt_type($input, $items){
     return $items;
     //this returns the newly sorted $items according to the type chosen.
   }  
+
+  function beg_end($items){
+        // Ask for entry
+        echo 'Would you like to add to the (B)eginning or (E)nd of the list? ';
+         
+        $input = get_input(TRUE);
+
+        if($input == 'B'){
+            echo 'Enter item: ';
+            array_unshift($items, get_input());
+        }else{
+            echo 'Enter item: ';
+            array_push($items, get_input());
+        }
+
+        return $items;
+  }
   
         
 
@@ -70,7 +87,7 @@ function srt_type($input, $items){
  do {
      // Echo the list produced by the function
      // echo list_items(($items))
-    echo list_items(($items));
+    echo list_items(($items)) . PHP_EOL;
      
 
       // Show the menu options
@@ -80,18 +97,15 @@ function srt_type($input, $items){
      // Use trim() to remove whitespace and newlines
      $input = get_input(TRUE);
 
+switch ($input){
+    case 'N':
 
-
-     
-if ($input == 'N') 
-{
-         // Ask for entry
-         echo 'Enter item: ';
+        $items = beg_end($items);
+        
          // Add entry to list array
-        $items[] = get_input();
-	} 
-
-elseif ($input == 'S') {
+    break;
+        
+    case 'S':
 
      echo '(A)-Z, (Z)-A, (O)rder entered, (R)everse order entered: '; 
       
@@ -103,10 +117,23 @@ elseif ($input == 'S') {
       //make it equal to $items - this now redefines $items as the newly sorted array.
       $items = array_values($items);
       //this ensures that numbering of items on list is numeric.
-    }
-        
+    break;
 
-elseif ($input == 'R') {
+    case 'F':
+
+        array_shift($items);
+        //print_r($items);
+    break;
+
+
+   case 'L':
+   
+        array_pop($items);
+        //print_r($items);
+    break;
+
+        
+    case 'R':
          // Remove which item?
          echo 'Enter item number to remove: ';
          // Get array key
@@ -115,10 +142,12 @@ elseif ($input == 'R') {
          unset($items[$key - 1]);
          
          $items = array_values($items);
-	}
+	break;
+}
 
  	// Exit when input is (Q)uit
 } while ($input != 'Q');
+
  
 
  	// Say Goodbye
